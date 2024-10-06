@@ -1,4 +1,4 @@
-# deno-react-Frontend
+# deno-fullstack
 ## intent
 
 Created as a learning tool for backend with API, using Postgres for persistence, and a React frontend.
