@@ -22,7 +22,10 @@ router
   })
   .get("/items/:id", async (ctx) => {
     const id = ctx.params.id;
-    const result = await client.queryObject("SELECT * FROM items WHERE id = $1", [id]);
+    const result = await client.queryObject(
+      "SELECT * FROM items WHERE id = $1",
+      [id],
+    );
     if (result.rows.length === 0) {
       ctx.response.status = 404;
       ctx.response.body = { message: "Item not found" };
@@ -34,7 +37,7 @@ router
     const { name } = await ctx.request.body().value;
     const result = await client.queryObject(
       "INSERT INTO items (name) VALUES ($1) RETURNING *",
-      [name]
+      [name],
     );
     ctx.response.status = 201;
     ctx.response.body = result.rows[0];
@@ -44,7 +47,7 @@ router
     const { name } = await ctx.request.body().value;
     const result = await client.queryObject(
       "UPDATE items SET name = $1 WHERE id = $2 RETURNING *",
-      [name, id]
+      [name, id],
     );
     if (result.rows.length === 0) {
       ctx.response.status = 404;
@@ -55,7 +58,9 @@ router
   })
   .delete("/items/:id", async (ctx) => {
     const id = ctx.params.id;
-    const result = await client.queryObject("DELETE FROM items WHERE id = $1", [id]);
+    const result = await client.queryObject("DELETE FROM items WHERE id = $1", [
+      id,
+    ]);
     if (result.rowCount === 0) {
       ctx.response.status = 404;
       ctx.response.body = { message: "Item not found" };
