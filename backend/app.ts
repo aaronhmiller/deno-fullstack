@@ -34,20 +34,20 @@ router
     ctx.response.body = result.rows[0];
   })
   .post("/items", async (ctx) => {
-    const { name } = await ctx.request.body().value;
+    const { name, description } = await ctx.request.body().value;
     const result = await client.queryObject(
-      "INSERT INTO items (name) VALUES ($1) RETURNING *",
-      [name],
+      "INSERT INTO items (name, description) VALUES ($1, $2) RETURNING *",
+      [name, description],
     );
     ctx.response.status = 201;
     ctx.response.body = result.rows[0];
   })
   .put("/items/:id", async (ctx) => {
     const id = ctx.params.id;
-    const { name } = await ctx.request.body().value;
+    const { name, description } = await ctx.request.body().value;
     const result = await client.queryObject(
-      "UPDATE items SET name = $1 WHERE id = $2 RETURNING *",
-      [name, id],
+      "UPDATE items SET name = $1, description = $2 WHERE id = $3 RETURNING *",
+      [name, description, id],
     );
     if (result.rows.length === 0) {
       ctx.response.status = 404;
